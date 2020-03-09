@@ -1,7 +1,6 @@
-import static org.junit.jupiter.api.Assertions.*;
-import java.util.concurrent.TimeUnit;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class AminoAcidResourcesTester{
 
@@ -22,7 +21,6 @@ class AminoAcidResourcesTester{
             }
             if(!found) System.err.println("Codon " + s + " not found, said AA was " + aaOut);
           }
-
           aaOut = AminoAcidResources.getAminoAcidFromCodon(s.toLowerCase());
           if(aaOut != '*'){
             String[] codonList = AminoAcidResources.getCodonListForAminoAcid(aaOut);
