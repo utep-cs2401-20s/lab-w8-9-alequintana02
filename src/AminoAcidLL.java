@@ -1,21 +1,30 @@
-class AminoAcidLL{
+class AminoAcidLL {
   char aminoAcid;
   String[] codons;
   int[] counts;
   AminoAcidLL next;
 
-  AminoAcidLL(){
+  AminoAcidLL() {
 
   }
 
 
   /********************************************************************************************/
-  /* Creates a new node, with a given amino acid/codon 
+  /* Creates a new node, with a given amino acid/codon
    * pair and increments the codon counter for that codon.
    * NOTE: Does not check for repeats!! */
-  AminoAcidLL(String inCodon){
-  
+  public AminoAcidLL(String inCodon) {
+    aminoAcid = AminoAcidResources.getAminoAcidFromCodon(inCodon);
+    codons = AminoAcidResources.getCodonListForAminoAcid(aminoAcid);
+    incrementCodons(inCodon);
+    next=null;
+    //counts should be the same size as codons
+
   }
+
+  //Michelle recommends to write a helped method
+  public void incrementCodons(String inCodon){
+}//
 
   /********************************************************************************************/
   /* Recursive method that increments the count for a specific codon:
@@ -23,9 +32,16 @@ class AminoAcidLL{
    * if not passes the task to the next node. 
    * If there is no next node, add a new node to the list that would contain the codon. 
    */
-  private void addCodon(String inCodon){
-  
-  }
+  private void addCodon(String c){
+    //need a base case
+    if(aminoAcid==AminoAcidResources.getAminoAcidFromCodon(c)) {
+      incrementCodons(c);
+    } if(next!=null) {
+        next.addCodon(c);
+    } else {
+        next= new AminoAcidLL(c);
+    }
+ }//closes addCodon
 
 
   /********************************************************************************************/
@@ -61,7 +77,7 @@ class AminoAcidLL{
   }
 
   /********************************************************************************************/
-  /* Same ad above, but counts the codon usage differences
+  /* Same as above, RECURSIVE TOO, but counts the codon usage differences
    * Must be sorted. */
   public int codonCompare(AminoAcidLL inList){
     return 0;
@@ -96,7 +112,7 @@ class AminoAcidLL{
 
 
   /********************************************************************************************/
-  /* sorts a list by amino acid character*/
+  /* sorts a list by amino acid character*///does not have to be recursive!
   public static AminoAcidLL sort(AminoAcidLL inList){
     return null;
   }
