@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AminoAcidResourcesTester{
+class AminoAcidResourcesTester {
 
   @Test
   public void allCodons(){
@@ -57,4 +57,4 @@ class AminoAcidResourcesTester{
     }
   }
 
-}
+}//closes AAR Tester class
