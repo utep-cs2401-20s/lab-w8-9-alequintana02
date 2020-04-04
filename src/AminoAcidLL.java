@@ -4,11 +4,7 @@ class AminoAcidLL {
   int[] counts;
   AminoAcidLL next;
 
-  AminoAcidLL() {
-
-  }
-
-
+  AminoAcidLL() {}
   /********************************************************************************************/
   /* Creates a new node, with a given amino acid/codon
    * pair and increments the codon counter for that codon.
@@ -19,12 +15,15 @@ class AminoAcidLL {
     incrementCodons(inCodon);
     next=null;
     //counts should be the same size as codons
-
   }
 
   //Michelle recommends to write a helped method
   public void incrementCodons(String inCodon){
-      int[]c
+     int sum =0;
+     for (int i=0; i<codons.length; i++){
+         sum += codons[i];
+
+     }
 }
 
   /********************************************************************************************/
@@ -48,8 +47,11 @@ class AminoAcidLL {
   /********************************************************************************************/
   /* Shortcut to find the total number of instances of this amino acid */
   private int totalCount(){
-
-    return 0;
+    int sum = 0;
+    for(int i=0;i<counts.length;i++){
+        sum += counts[i];
+    }
+    return sum;
   }
 
   /********************************************************************************************/
@@ -83,6 +85,24 @@ class AminoAcidLL {
           diff += totalCount();
           if (next != null) {
               diff += next.Compare(inList.next);
+          } else if (aminoAcid == inList.aminoAcid) {
+              diff = totalDiff(inList);
+          }
+      }
+      if (next != null) {
+          diff += next.compare(inList.next);
+      }
+      if (next == null && inList.next != null) {
+          diff += compare(inList.next);
+      } else if (next != null && aminoAcid < inList.aminoAcid) {
+          diff += totalCount();
+          if (next != null) {
+              diff += next.compare(inList);
+          }
+      } else if (next == null || aminoAcid > inList.aminoAcid) {
+          diff += inList.totalCount();
+          if (inList.next != null) {
+              diff += compare(inList.next);
           }
       }
       return diff;
@@ -92,9 +112,37 @@ class AminoAcidLL {
   /* Same as above, RECURSIVE TOO, but counts the codon usage differences
    * Must be sorted. */
   public int codonCompare(AminoAcidLL inList){
-    return 0;
-  }
+      if (!inList.isSorted()) {
+          return -1;
+      }
+      int diff = 0;
+      if (inList == null) {
+          diff += totalCount();
+          if (next != null) {
+              diff += next.Compare(inList.next);
+          } else if (aminoAcid == inList.aminoAcid) {
+              diff = totalDiff(inList);
+          }
+      }
+      if (next != null) {
+          diff += next.compare(inList.next);
+      }
+      if (next == null && inList.next != null) {
+          diff += compare(inList.next);
+      } else if (next != null && aminoAcid < inList.aminoAcid) {
+          diff += totalCount();
+          if (next != null) {
+              diff += next.compare(inList);
+          }
+      } else if (next == null || aminoAcid > inList.aminoAcid) {
+          diff += inList.totalCount();
+          if (inList.next != null) {
+              diff += compare(inList.next);
+          }
+      }
 
+      return diff;
+  }
 
   /********************************************************************************************/
   /* Recursively returns the total list of amino acids in the order that they are in in the linked list. */
@@ -106,7 +154,7 @@ class AminoAcidLL {
           char[] toReturn = new char[array.length + 1];
           //now we have to populate the array
           for (int i = 0; i < array.length; i++) {
-              for (int j = 0; j < array[i].length; j++) {
+              for (int j = 0; j < array.length-1; j++) {
 
               }//closes for loop
 
@@ -117,38 +165,51 @@ class AminoAcidLL {
 
       /********************************************************************************************/
       /* Recursively returns the total counts of amino acids in the order that they are in in the linked list. */
+      //is like AAList ^^^
       public int[] aminoAcidCounts () {
+          if (next == null) {
+              return new char[]{aminoAcid};
+          } else {
+              char[] array = next.aminoAcidList();
+              int[] toReturn = new int[array.length + 1];
+              //now we have to populate the array
+              for (int i = 0; i < array.length; i++) {
+                  for (int j = 0; j < array.length-1; j++) {
+
+                  }//closes for loop
+
+              }//closes else
+              return toReturn;
+          }
+      }
           return new int[]{};
       }
 
 
       /********************************************************************************************/
       /* recursively determines if a linked list is sorted or not */
+      //compares the aminoacids
       public boolean isSorted () {
-          if () {
+          if (next==null) {
               return true;
           } else {
               return false;
           }
       }
-
-
   /********************************************************************************************/
   /* Static method for generating a linked list from an RNA sequence */
-  public static AminoAcidLL createFromRNASequence(String inSequence){
-      for(int i=0;i < inSequence.length();i+=3){//because you want to separate the string into segments of 3
-        inSequence.substring(0,inSequence.charAt(i));
-        return inSequence.AminoAcidLL(); //+ createFromRNASequence(inSequence.substring(1,i));
-          }
-
-    return AminoAcidLL(inSequence);
-
+  public static AminoAcidLL createFromRNASequence(String inSequence) {
+      AminoAcidLL list = new AminoAcidLL();
+      for (int i = 0; i < inSequence.length(); i += 3) {//because you want to separate the string into segments of 3
+          String str = inSequence.substring(i, i += 3);
+          list.addCodon(str);
+      }
+      return list;
   }
-
 
   /********************************************************************************************/
   /* sorts a list by amino acid character*///does not have to be recursive!
-      //use bubble, selection, insert sort
+      //use bubble, selection, or insert sort
       //we will need a temp
   public static AminoAcidLL sort(AminoAcidLL inList){
       for (int i=0; i < inList.length;i++){
